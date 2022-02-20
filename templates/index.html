@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale = 1, width=device-width">
+        <style>
+            .getin
+            {
+                text-align: center;
+                background-color: burlywood;
+                padding: 1%;
+            }
+            .b
+            {
+                text-align: center;
+                background-color: khaki;
+                padding: 1%; 
+            }
+            .in
+            {
+                width: 50%;
+                font-family: 'Courier New', Courier, monospace;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                margin: 8px 0;
+            }
+            .but
+            {
+                width: 50%;
+                font-family: 'Courier New', Courier, monospace;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                margin: 8px 0;
+                background-color: lightcoral;
+                color: white;
+            }
+            .but:hover
+            {
+                background-color: orange;
+            }
+            .orderlist
+            {
+                width: 100%;
+                font-family: 'Courier New', Courier, monospace;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                margin: 8px 0;
+                background-color: gold;
+                color: black;
+                text-align: center;
+            }
+        </style>
+        <title>Hello</title>
+    </head>
+    <body class="b">
+        <div class="getin">
+            <input class="in" id="inp" autocomplete="off" autocapitalize="off" name="input" placeholder="Task" type="text">
+            <br>
+            <button class="but" id="sub" disabled>SUBMIT</button>
+        </div>
+        <ol class="orderlist" id="op">
+            {% for item in items %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ol>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const input = document.querySelector('#inp');
+                const button = document.querySelector('#sub');
+                input.addEventListener('keyup', function() {
+                    if (input.value) {
+                        button.disabled = false;
+                    } else {
+                        button.disabled = true;
+                    }
+                });
+                button.addEventListener('click', async function() {
+                    let get = await fetch("/get?todo=" + input.value);
+                    let response = await get.json();
+                    let h = '';
+                    for (let item in response) {
+                       h = h + '<li>' + response[item] + '</li>'
+                    }
+                    document.querySelector('#op').innerHTML = h;
+                });
+            });
+        </script>
+    </body>
+</html>
